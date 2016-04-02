@@ -1,6 +1,7 @@
 package com.audiodemo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ public class AudioM extends AppCompatActivity {
     private Button currentStreamDown;
     private Button setStream;
     private Button musicActive;
+    private Button next;
     private AudioManager audioManager;
 
 
@@ -39,6 +41,7 @@ public class AudioM extends AppCompatActivity {
         currentStreamDown = (Button) findViewById(R.id.stream_down_button);
         setStream = (Button) findViewById(R.id.set_stream_button);
         musicActive = (Button) findViewById(R.id.headset_button);
+        next = (Button) findViewById(R.id.next);
 
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
@@ -49,15 +52,15 @@ public class AudioM extends AppCompatActivity {
                 Toast.makeText(AudioM.this, "Mode set to VIBRATION", Toast.LENGTH_SHORT).show();
             }
         });
-        
+
         ring.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-                Toast.makeText(AudioM.this, "Mode set to NORMAL (RING)", Toast.LENGTH_SHORT).show(); 
+                Toast.makeText(AudioM.this, "Mode set to NORMAL (RING)", Toast.LENGTH_SHORT).show();
             }
         });
-        
+
         silent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,7 +68,7 @@ public class AudioM extends AppCompatActivity {
                 Toast.makeText(AudioM.this, "Mode set to SILENT", Toast.LENGTH_SHORT).show();
             }
         });
-        
+
         mode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,38 +101,45 @@ public class AudioM extends AppCompatActivity {
         ringDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                audioManager.adjustStreamVolume(AudioManager.STREAM_RING, AudioManager.ADJUST_LOWER, 1);
+                audioManager.adjustStreamVolume(AudioManager.STREAM_RING, AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND);
             }
         });
 
         currentStreamUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                audioManager.adjustVolume(AudioManager.ADJUST_RAISE, 1);
+                audioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
             }
         });
 
         currentStreamDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                audioManager.adjustVolume(AudioManager.ADJUST_LOWER, 1);
+                audioManager.adjustVolume(AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND);
             }
         });
 
         setStream.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                audioManager.setStreamVolume(AudioManager.STREAM_RING, audioManager.getStreamMaxVolume(AudioManager.STREAM_RING), 1);
+                audioManager.setStreamVolume(AudioManager.STREAM_RING, audioManager.getStreamMaxVolume(AudioManager.STREAM_RING), AudioManager.FLAG_PLAY_SOUND);
             }
         });
 
         musicActive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(AudioM.this, "HeadPhones: " + audioManager.isMusicActive(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(AudioM.this, "Music: " + audioManager.isMusicActive(), Toast.LENGTH_SHORT).show();
             }
         });
 
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AudioM.this, CaptureActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
     }
